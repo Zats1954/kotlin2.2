@@ -30,8 +30,7 @@ class MainTest {
         var post = Post(title ="First post", date = 1603890634, ownerId = 1)
         val posts = ru.netology.WallService()
         posts.add(post)
-        post = Post(id =1,title ="Second post", date = 1603631434, ownerId = 2)
-        println(posts.update(post))
+        post = Post(id =100,title ="Second post", date = 1603631434, ownerId = 2)
         assertFalse (actual = posts.update(post))
     }
 }

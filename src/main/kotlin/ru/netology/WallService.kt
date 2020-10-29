@@ -1,11 +1,11 @@
 package ru.netology
 
 class WallService {
-    private var id = 0
     private var posts = emptyArray<Post>()
 
     fun add(post: Post) {
-        posts += post.copy(id = id++)
+        val newId = if(posts.size ==0) {0} else{posts.last().id +1}
+        posts += post.copy(id = newId)
     }
 
     fun update(post: Post): Boolean {
