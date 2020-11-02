@@ -6,10 +6,10 @@ data class Comments(
     val groupsCanPost: Boolean = true,
     val canClose: Boolean = false,
     val canOpen: Boolean = true,
-    var content: Array<String> = emptyArray())
+    var comments: Array<Comment> = emptyArray())
    {
-    fun getComment(index: Int) = content[index]
-    fun setComment(value: String) {
-        content = content.plus(value)
+    fun getComment(index: Int) = comments[index]
+    fun setComment(value: Comment) {
+        comments = comments.plus(value)
     }
 }

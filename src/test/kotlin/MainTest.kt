@@ -52,28 +52,29 @@ class MainTest {
 
     @Test
     fun post_Attachment() {
+        val posts = WallService()
         val post = Post(title ="First test post",
             text = "First test Text",
             ownerId = 1)
         val attachment = PhotoAttachment()
         attachment.id = 1
-        post.attachments?.addAttachment(attachment)
+        posts.addAttachment(post,attachment)
         val attachment1 = VideoAttachment()
         attachment1.id = 2
-        post.attachments?.addAttachment(attachment1)
+        posts.addAttachment(post,attachment1)
         val attachment2 = AudioAttachment()
         attachment2.id = 3
-        post.attachments?.addAttachment(attachment2)
+        posts.addAttachment(post,attachment2)
         val attachment3 = DocAttachment()
         attachment3.id = 4
-        post.attachments?.addAttachment(attachment3)
+        posts.addAttachment(post,attachment3)
         val attachment4 = LinkAttachment()
         attachment4.id = 5
-        post.attachments?.addAttachment(attachment4)
-        assertEquals("show photo 1", post.attachments?.makeAttachment(0))
-        assertEquals("play video 2", post.attachments?.makeAttachment(1))
-        assertEquals("play audio 3", post.attachments?.makeAttachment(2))
-        assertEquals("read doc 4", post.attachments?.makeAttachment(3))
-        assertEquals("go to link 5", post.attachments?.makeAttachment(4))
+        posts.addAttachment(post,attachment4)
+        assertEquals("show photo 1", posts.makeAttachment(post,0))
+        assertEquals("play video 2", posts.makeAttachment(post,1))
+        assertEquals("play audio 3", posts.makeAttachment(post,2))
+        assertEquals("read doc 4", posts.makeAttachment(post,3))
+        assertEquals("go to link 5", posts.makeAttachment(post,4))
     }
 }
