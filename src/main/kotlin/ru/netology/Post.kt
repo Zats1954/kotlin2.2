@@ -12,7 +12,7 @@ data class Post(
     var createdBy: Int = 0,
     var replyOwnerId: Int = 0,
     var friendsOnly: Boolean = true,
-    var comments: Array<Comment> = emptyArray(),
+    var comments: Comments = Comments(),
     var copyright: String = "",
     var likes: Likes? = null,
     var reposts: Reposts? = null,
