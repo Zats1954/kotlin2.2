@@ -1,14 +1,14 @@
 package ru.netology
 
-data class Comment(val ownerId:Int =0,
-              val postId:Int = 0,
-              val fromGroup:Int = 0,
-              val message:String = "",
-              val replyToComment: Int = 0,
-              val attachments: String = "",
-              val stickerId: Int = 0,
-              val guid:String = "",
-              val commentId:Int = 0)
-        {
-          val parentStack: Array<Int>  = emptyArray()
-        }
+import java.time.Clock
+
+data class Comment(val id:Int =0,
+                   val fromId: Int = 0,
+                   val date:  Int = Clock.systemUTC().millis().toInt(),
+                   val text:String = "",
+                   val replyToUser: Int = 0,
+                   val replyToComment: Int = 0,
+                   val attachments: Array<Attachment> = emptyArray(),
+                   val parentsStack: Array<Comment>? = null,
+                   val thread: CommentThread = CommentThread()
+                  )  {  }

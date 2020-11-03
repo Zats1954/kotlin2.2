@@ -6,11 +6,11 @@ import kotlin.test.assertFalse
 class MainTest {
     @Test
     fun post_Add(){
+        val posts = WallService()
         var post = Post(title ="First test post",
                         text = "First test Text",
                         ownerId = 1)
         post.date = 1603890634
-        val posts = WallService()
         posts.add(post)
         post = Post(title ="Second test post",
                     text = "Second test Text",
@@ -22,11 +22,11 @@ class MainTest {
 
     @Test
     fun post_UpdateTrue(){
+        val posts = WallService()
         var post = Post(id=0,title ="First test post",
                         text = "First test Text",
                         ownerId = 1)
         post.date = 1603890634
-        val posts = WallService()
         posts.add(post)
         post = Post(id=0,title ="Second test post",
                     text = "Second test Text",
@@ -39,11 +39,12 @@ class MainTest {
 
     @Test
     fun post_UpdateFalse(){
+        val posts = WallService()
         var post = Post(title ="First test post",
             text = "First test Text",
             ownerId = 1)
         post.date = 1603890634
-        val posts = WallService()
+
         posts.add(post)
         post = Post(id =100,title ="Second post", text = "Second test Text", ownerId = 2)
         post.date = 1603631434
@@ -76,5 +77,46 @@ class MainTest {
         assertEquals("play audio 3", posts.makeAttachment(post,2))
         assertEquals("read doc 4", posts.makeAttachment(post,3))
         assertEquals("go to link 5", posts.makeAttachment(post,4))
+    }
+
+    @Test
+    fun add_Comment_True(){
+        val posts = WallService()
+        val post = Post(title ="First test post",
+            text = "First test Text",
+            ownerId = 1)
+        posts.add(post)
+        posts.createComment(Comment(id = 0, text = "хороший комментарий"))
+        assertEquals ("хороший комментарий", posts[0].comments.comments.get(0).text)
+        assertEquals (1, posts[0].comments.count)
+    }
+
+    @Test(expected = PostNotFoundException::class)
+    fun add_Comment_False(){
+        val posts = WallService()
+        val post = Post(title ="First test post",
+            text = "First test Text",
+            ownerId = 1)
+        posts.add(post)
+        posts.createComment(Comment(id = 100, text = "хороший комментарий"))
+        assertEquals ("хороший комментарий", posts[0].comments.comments.get(0).text)
+        assertEquals (1, posts[0].comments.count)
+    }
+
+    @Test
+    fun reportComment(){
+        val posts = WallService()
+        val post = Post(title ="First test post",
+            fromId = 1,
+            text = "First test Text")
+        posts.add(post)
+        posts.createComment(Comment(id = 0, text = "хороший комментарий",fromId = 0))
+//        post = Post(id=1,title ="Second test post",
+//            fromId = 1,
+//            text = "Second test Text"
+//            )
+        posts.createComment(Comment(id = 1, text = "нехороший комментарий", fromId = 0))
+//        posts.add(post)
+        assertEquals ("нехороший комментарий материал для взрослых", posts.reportComment(0,1,Reason.ADULTS))
     }
 }

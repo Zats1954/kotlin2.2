@@ -2,7 +2,6 @@ package ru.netology
 
 class WallService {
     private var posts = emptyArray<Post>()
-    private var comments = emptyArray<Comment>()
 
     fun add(post: Post) {
         val newId = if(posts.size ==0) {0} else{posts.last().id +1}
@@ -57,9 +56,43 @@ class WallService {
         else -> {"Unknown type"}
     }
 
-//    fun createomment(comment: Comment) {
-//         comment.guid = comments?.lastIndex?: 0
-//         comments = comments.plus(comment)
-//
-//    }
+    fun createComment(comment: Comment) {
+        val postComment = comment.fromId
+        val post =  findById(postComment)?:
+                              throw PostNotFoundException("no post with id $postComment.id")
+        post.comments.comments = post.comments.comments.plusElement(comment)
+        post.comments.count++
+    }
+
+    fun reportComment(ownerId:Int, commentId: Int, newReason: Reason): String{
+        for(post in posts){
+            for(comment in post.comments.comments){
+                if(comment.id == commentId && comment.fromId == ownerId){
+                    return comment.text + " " +  newReason.attribute
+                }
+            }
+        }
+        return "не найден комментарий $commentId для $ownerId"
+    }
+
+    fun  findById(postComment: Int): Post? {
+        for (post in posts) {
+            if(postComment == post.id)
+                return post
+        }
+        return null
+    }
 }
+
+class PostNotFoundException(s: String) : RuntimeException(s)
+
+enum class Reason(val order: Int,val attribute: String) {
+    SPAM(0,"спам"),
+    CHILDPORN(1,"детская порнография"),
+    EXTREMIZM(2,"экстремизм"),
+    VIOLENCE(3,"насилие"),
+    DRUGS(4," пропаганда наркотиков"),
+    ADULTS(5,"материал для взрослых"),
+    OUTRAGE(6,"оскорбление"),
+    SUICIDE(8,"призывы к суициду");  // а где 7 ?
+    }
