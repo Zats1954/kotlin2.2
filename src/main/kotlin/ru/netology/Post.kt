@@ -1,53 +1,75 @@
 package ru.netology
 
+import java.time.Clock
+
 data class Post(
     val id: Int = 0,
+    var title: String = "",
+    var text: String = "",
+    var date: Int = Clock.systemUTC().millis().toInt(),
     var ownerId: Int = 0,
-    val fromId: Int = 0,
-    val createdBy: Int = 0,
-    var date: Int = 0,
-    val text: String = "",
-    val replyOwnerId: Int = 0,
-    val friendsOnly: Boolean = true,
-    val comments: Comments = Comments(),
-    val copyright: String = "",
-    val likes: Likes = Likes(),
-    val reposts: Reposts = Reposts(),
-    val views: Views = Views(),
-    val postType: String = "",
-    val signerId: Int = 0,
-    val title: String = "",
-    val canPin: Boolean = true,
-    val canDelete: Boolean = false,
-    val canEdit: Boolean = false,
-    val isPinned: Boolean = true,
-    val markedAsAds: Boolean = false,
-    val isFavorite: Boolean = true,
-    val postponedId: Int = 0
-) {
-
-    class Comments (
-        var Count: Int = 0,
-        val canPost: Boolean = true,
-        val groupsCanPost: Boolean = true,
-        val canClose: Boolean = false,
-        val canOpen: Boolean = true
-    ){    }
+    var fromId: Int = 0,
+    var createdBy: Int = 0,
+    var replyOwnerId: Int = 0,
+    var friendsOnly: Boolean = true,
+    var comments: Comments = Comments(),
+    var copyright: String = "",
+    var likes: Likes? = null,
+    var reposts: Reposts? = null,
+    var views: Views? = null,
+    var attachments: Array<Attachment> = emptyArray(),
+    var postType: PostType = PostType.POST,
+    var postSource: PostSource? = null,
+    var geo: Geo? = null,
+    var signerId: Int = 0,
+    var copyHistory: Array<Post> = emptyArray(),
+    var canPin: Boolean = true,
+    var canDelete: Boolean = false,
+    var canEdit: Boolean = false,
+    var isPinned: Boolean = false,
+    var markedAsAds: Boolean = false,
+    var isFavorite: Boolean = true,
+    var postponedId: Int? = 0
+) {}
 
     class Likes(
-        var Count: Int = 0,
         val userLikes: Boolean = true,
         val canLike: Boolean = true,
-        val canPublish: Boolean = true
-    ) {    }
+        val canPublish: Boolean = true,
+        var Count: Int = 0) { }
 
     class Reposts(
-        var Count: Int = 0,
-        val userReposted: Boolean = false
-    ) {    }
+        val userReposted: Boolean = false,
+        var Count: Int = 0){}
 
-    class Views(
-        var Count: Int = 0
-    ) {    }
+    class Views(var Count: Int = 0) { }
 
+    class Geo(
+        val type: String = "",
+        val coordinates: String = "",
+        val place: PLace?){}
+
+
+    class PLace(
+        val id: Int = 0,
+        var title: String = "",
+        var latitude: Int = 0,
+        var longitude: Int = 0,
+        val created: Int = 0,
+        val icon: String = "",
+        val checkins: Int = 0,
+        val updated: Int = 0,
+        val type: Int = 0,
+        val country: Int = 0,
+        val city: Int = 0,
+        val address: String = ""
+    ){ }
+
+enum class PostType {
+    POST,
+    COPY,
+    REPLY,
+    POSTPONE,
+    SUGGEST
 }
+
