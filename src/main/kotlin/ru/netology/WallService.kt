@@ -2,7 +2,7 @@ package ru.netology
 
 class WallService {
     private var posts = emptyArray<Post>()
-
+    private var comments = emptyArray<Comment>()
     fun add(post: Post) {
         val newId = if(posts.size ==0) {0} else{posts.last().id +1}
         posts += post.copy(id = newId)
@@ -26,7 +26,13 @@ class WallService {
         return posts[i]
     }
 
-
+    fun getComment(i:Int):  Comment?  {
+        try{
+            return comments[i]
+        } catch(e:ArrayIndexOutOfBoundsException){
+            return null
+        }
+    }
 
     fun addAttachment(post: Post, value: Attachment) {
         post.attachments = post.attachments.plus(value)
@@ -60,13 +66,13 @@ class WallService {
         val postComment = comment.fromId
         val post =  findById(postComment)?:
                               throw PostNotFoundException("no post with id $postComment.id")
-        post.comments.comments = post.comments.comments.plusElement(comment)
+        comments = comments.plusElement(comment)
         post.comments.count++
     }
 
     fun reportComment(ownerId:Int, commentId: Int, newReason: Reason): String{
         for(post in posts){
-            for(comment in post.comments.comments){
+            for(comment in comments){
                 if(comment.id == commentId && comment.fromId == ownerId){
                     return comment.text + " " +  newReason.attribute
                 }

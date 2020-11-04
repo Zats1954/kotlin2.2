@@ -87,7 +87,7 @@ class MainTest {
             ownerId = 1)
         posts.add(post)
         posts.createComment(Comment(id = 0, text = "хороший комментарий"))
-        assertEquals ("хороший комментарий", posts[0].comments.comments.get(0).text)
+        assertEquals ("хороший комментарий", posts.getComment(0)?.text)
         assertEquals (1, posts[0].comments.count)
     }
 
@@ -99,7 +99,7 @@ class MainTest {
             ownerId = 1)
         posts.add(post)
         posts.createComment(Comment( text = "хороший комментарий", fromId = 100))
-        assertEquals ("хороший комментарий", posts[0].comments.comments.get(0).text)
+        assertEquals ("хороший комментарий", posts.getComment(0)?.text)
         assertEquals (1, posts[0].comments.count)
     }
 

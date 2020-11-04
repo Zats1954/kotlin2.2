@@ -47,10 +47,10 @@ data class Post(
     class Geo(
         val type: String = "",
         val coordinates: String = "",
-        val place: PLace?){}
+        val place: Place?){}
 
 
-    class PLace(
+    class Place(
         val id: Int = 0,
         var title: String = "",
         var latitude: Int = 0,
