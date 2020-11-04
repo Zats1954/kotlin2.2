@@ -86,8 +86,8 @@ class MainTest {
             text = "First test Text",
             ownerId = 1)
         posts.add(post)
-        posts.createComment(Comment(id = 0, text = "хороший комментарий"))
-        assertEquals ("хороший комментарий", posts.getComment(0)?.text)
+        posts.createComment(Comment(guid = 0, message = "хороший комментарий"))
+        assertEquals ("хороший комментарий", posts.getComment(0)?.message)
         assertEquals (1, posts[0].comments.count)
     }
 
@@ -98,8 +98,8 @@ class MainTest {
             text = "First test Text",
             ownerId = 1)
         posts.add(post)
-        posts.createComment(Comment( text = "хороший комментарий", fromId = 100))
-        assertEquals ("хороший комментарий", posts.getComment(0)?.text)
+        posts.createComment(Comment( message = "хороший комментарий", postId = 100))
+        assertEquals ("хороший комментарий", posts.getComment(0)?.message)
         assertEquals (1, posts[0].comments.count)
     }
 
@@ -110,13 +110,8 @@ class MainTest {
             fromId = 1,
             text = "First test Text")
         posts.add(post)
-        posts.createComment(Comment(id = 0, text = "хороший комментарий",fromId = 0))
-//        post = Post(id=1,title ="Second test post",
-//            fromId = 1,
-//            text = "Second test Text"
-//            )
-        posts.createComment(Comment(id = 1, text = "нехороший комментарий", fromId = 0))
-//        posts.add(post)
+        posts.createComment(Comment(guid = 0, message = "хороший комментарий",postId = 0))
+        posts.createComment(Comment(guid = 1, message = "нехороший комментарий", postId = 0))
         assertEquals ("нехороший комментарий материал для взрослых", posts.reportComment(0,1,Reason.ADULTS))
     }
 }

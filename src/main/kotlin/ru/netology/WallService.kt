@@ -62,23 +62,26 @@ class WallService {
         else -> {"Unknown type"}
     }
 
-    fun createComment(comment: Comment) {
-        val postComment = comment.fromId
-        val post =  findById(postComment)?:
-                              throw PostNotFoundException("no post with id $postComment.id")
-        comments = comments.plusElement(comment)
+    fun createComment(newComment: Comment) {
+        val post =  findById(newComment.postId)?:
+                              throw PostNotFoundException("no post with id $newComment.postId")
+        for(comment in comments){  // для предотвращения повторной отправки одинакового комментария
+            if(comment.guid == newComment.guid)
+                return
+        }
+        comments = comments.plusElement(newComment)
         post.comments.count++
     }
 
-    fun reportComment(ownerId:Int, commentId: Int, newReason: Reason): String{
+    fun reportComment(postId:Int, guid: Int, newReason: Reason): String{
         for(post in posts){
             for(comment in comments){
-                if(comment.id == commentId && comment.fromId == ownerId){
-                    return comment.text + " " +  newReason.attribute
+                if(comment.guid == guid && comment.postId == postId){
+                    return comment.message + " " +  newReason.attribute
                 }
             }
         }
-        return "не найден комментарий $commentId для $ownerId"
+        return "не найден комментарий $guid для $postId"
     }
 
     fun  findById(postComment: Int): Post? {
